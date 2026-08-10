@@ -1,43 +1,52 @@
 using AuthenticationService.API.Configuration;
+using AuthenticationService.API.Services;
+using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Application Settings
-builder.Services
-    .AddOptions<ApplicationSettings>()
-    .Bind(builder.Configuration.GetSection(ApplicationSettings.SectionName))
-    .ValidateDataAnnotations()
-    .ValidateOnStart();
+// =====================================================
+// Options Pattern Configuration
+// =====================================================
 
-// JWT Settings
 builder.Services
     .AddOptions<JwtSettings>()
-    .Bind(builder.Configuration.GetSection(JwtSettings.SectionName))
+    .Bind(builder.Configuration.GetSection("JwtSettings"))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-// SMS Settings
+builder.Services
+    .AddOptions<DatabaseSettings>()
+    .Bind(builder.Configuration.GetSection("ConnectionStrings"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 builder.Services
     .AddOptions<SmsSettings>()
-    .Bind(builder.Configuration.GetSection(SmsSettings.SectionName))
+    .Bind(builder.Configuration.GetSection("SmsSettings"))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-// Database
-builder.Services.Configure<DatabaseSettings>(
-    builder.Configuration.GetSection(DatabaseSettings.SectionName));
+builder.Services
+    .AddOptions<SerilogSettings>()
+    .Bind(builder.Configuration.GetSection("Serilog"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
-// Swagger
-builder.Services.Configure<SwaggerSettings>(
-    builder.Configuration.GetSection(SwaggerSettings.SectionName));
+builder.Services
+    .AddOptions<SwaggerSettings>()
+    .Bind(builder.Configuration.GetSection("SwaggerSettings"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
-// Serilog
-builder.Services.Configure<SerilogSettings>(
-    builder.Configuration.GetSection(SerilogSettings.SectionName));
-
+builder.Services
+    .AddOptions<ApplicationSettings>()
+    .Bind(builder.Configuration.GetSection("ApplicationSettings"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<IConfigurationTestService, ConfigurationTestService>();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();

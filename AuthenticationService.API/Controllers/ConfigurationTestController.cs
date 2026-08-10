@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AuthenticationService.API.Configuration;
+using AuthenticationService.API.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using AuthenticationService.API.Configuration;
 using Microsoft.Extensions.Options;
 namespace AuthenticationService.API.Controllers
 {
@@ -10,10 +11,13 @@ namespace AuthenticationService.API.Controllers
     {
         private readonly JwtSettings _jwtSettings;
         private readonly SmsSettings _smsSettings;
-        public ConfigurationTestController(IOptions<JwtSettings> jwtOptions,IOptions<SmsSettings> smsOptions)
+       
+        public ConfigurationTestController(IOptions<JwtSettings> jwtOptions,IOptions<SmsSettings> smsOptions,IConfiguration configuration)
         {
             _jwtSettings = jwtOptions.Value;
             _smsSettings = smsOptions.Value;
+            
+
         }
         [HttpGet("test")]
         public IActionResult Test()
@@ -28,5 +32,6 @@ namespace AuthenticationService.API.Controllers
                 
 
         }
+        
     }
 }
