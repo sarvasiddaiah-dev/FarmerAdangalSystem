@@ -1,18 +1,45 @@
 using AuthenticationService.API.Configuration;
-
+using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<ApplicationSettings>(builder.Configuration.GetSection(ApplicationSettings.SectionName));
-builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(DatabaseSettings.SectionName));
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
-builder.Services.Configure<SmsSettings>(builder.Configuration.GetSection(SmsSettings.SectionName));
-builder.Services.Configure<SwaggerSettings>(builder.Configuration.GetSection(SwaggerSettings.SectionName));
-builder.Services.Configure<SerilogSettings>(builder.Configuration.GetSection(SerilogSettings.SectionName));
+// Application Settings
+builder.Services
+    .AddOptions<ApplicationSettings>()
+    .Bind(builder.Configuration.GetSection(ApplicationSettings.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+// JWT Settings
+builder.Services
+    .AddOptions<JwtSettings>()
+    .Bind(builder.Configuration.GetSection(JwtSettings.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+// SMS Settings
+builder.Services
+    .AddOptions<SmsSettings>()
+    .Bind(builder.Configuration.GetSection(SmsSettings.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+// Database
+builder.Services.Configure<DatabaseSettings>(
+    builder.Configuration.GetSection(DatabaseSettings.SectionName));
+
+// Swagger
+builder.Services.Configure<SwaggerSettings>(
+    builder.Configuration.GetSection(SwaggerSettings.SectionName));
+
+// Serilog
+builder.Services.Configure<SerilogSettings>(
+    builder.Configuration.GetSection(SerilogSettings.SectionName));
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -28,7 +55,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 
 app.Run();
