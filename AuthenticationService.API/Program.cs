@@ -1,8 +1,9 @@
 using AuthenticationService.API.Configuration;
 using AuthenticationService.API.Services;
+using AuthenticationService.Application.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
-
+using AuthenticationService.Application.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // =====================================================
@@ -47,6 +48,7 @@ builder.Services
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IConfigurationTestService, ConfigurationTestService>();
+builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
