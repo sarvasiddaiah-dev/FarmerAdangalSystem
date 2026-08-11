@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Extensions\" />
     <Folder Include="Responses\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AuthenticationService.Domain\AuthenticationService.Domain.csproj" />
   </ItemGroup>
 
 </Project>
