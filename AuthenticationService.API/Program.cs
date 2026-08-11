@@ -1,10 +1,7 @@
 using AuthenticationService.API.Configuration;
 using AuthenticationService.API.Services;
-using AuthenticationService.Application.Interfaces;
-using Microsoft.Extensions.Options;
-using System.Security.Cryptography;
-using AuthenticationService.Application.Services;
 using AuthenticationService.Application.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // =====================================================
@@ -46,15 +43,20 @@ builder.Services
     .Bind(builder.Configuration.GetSection("ApplicationSettings"))
     .ValidateDataAnnotations()
     .ValidateOnStart();
+
+// Application Services
 builder.Services.AddApplicationServices();
+// MVC / API
 builder.Services.AddControllers();
-
+// Authorization
+builder.Services.AddAuthorization();
+// Configuration Test Service
 builder.Services.AddScoped<IConfigurationTestService, ConfigurationTestService>();
-
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
-
+// Build Application
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
