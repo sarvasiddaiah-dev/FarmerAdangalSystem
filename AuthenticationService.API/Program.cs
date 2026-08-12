@@ -1,7 +1,7 @@
 using AuthenticationService.API.Configuration;
 using AuthenticationService.API.Services;
 using AuthenticationService.Application.Extensions;
-
+using AuthenticationService.Infrastructure.Configurations;
 var builder = WebApplication.CreateBuilder(args);
 
 // =====================================================
@@ -44,8 +44,9 @@ builder.Services
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-// Application Services
+//  Services
 builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices();
 // MVC / API
 builder.Services.AddControllers();
 // Authorization

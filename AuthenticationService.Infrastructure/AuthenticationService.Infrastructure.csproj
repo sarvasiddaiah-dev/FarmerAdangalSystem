@@ -15,10 +15,8 @@
   <ItemGroup>
     <Folder Include="JWT\" />
     <Folder Include="Logging\" />
-    <Folder Include="Configurations\" />
     <Folder Include="SMS\" />
     <Folder Include="Security\" />
-    <Folder Include="Persistence\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
